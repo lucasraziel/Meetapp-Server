@@ -25,4 +25,11 @@ describe('File', () => {
 
     expect(await fs.exists(destPath)).toBe(true);
   });
+
+  it('should raise an error', async () => {
+    const response = await request(app).post('/files');
+
+    expect(response.status).toBe(500);
+    expect(response.body).toHaveProperty('error');
+  });
 });
