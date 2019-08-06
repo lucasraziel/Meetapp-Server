@@ -23,8 +23,6 @@ describe('File', () => {
 
     const destPath = resolve(__dirname, '..', 'tmp', fileName);
 
-    console.log(destPath);
-
     expect(await fs.exists(destPath)).toBe(true);
   });
 });
