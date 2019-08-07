@@ -98,7 +98,7 @@ describe('Meetup', () => {
     const file_id = FileResponse.body.id;
 
     const meetup = await factory.attrs('Meetup-1day', { file_id });
-    const responseMeetup = await request(app)
+    await request(app)
       .post('/meetups')
       .set('Authorization', `bearer ${token}`)
       .send(meetup);
