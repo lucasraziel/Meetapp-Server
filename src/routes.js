@@ -8,6 +8,7 @@ import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
 import MeetupController from './app/controllers/MeetupController';
 import SubscriptionController from './app/controllers/SubscriptionController';
+import AvailableController from './app/controllers/AvailableController';
 
 import validateUserStore from './app/validators/UserStore';
 import validateSessionStore from './app/validators/SessionStore';
@@ -24,6 +25,8 @@ const upload = multer(multerConfig);
 routes.post('/users', validateUserStore, UserController.store);
 
 routes.post('/session', validateSessionStore, SessionController.store);
+
+routes.get('/meetups/available', AvailableController.store);
 
 routes.use(authMiddleware);
 

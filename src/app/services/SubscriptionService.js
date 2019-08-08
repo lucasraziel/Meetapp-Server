@@ -1,4 +1,4 @@
-import { isBefore, startOfHour, endOfHour, parseISO } from 'date-fns';
+import { isBefore, startOfHour, endOfHour } from 'date-fns';
 import { Op } from 'sequelize';
 
 import Subscription from '../models/Subscription';
@@ -6,11 +6,12 @@ import Meetup from '../models/Meetup';
 
 class SubscriptionService {
   async run({ meetup, userId }) {
+    const meetupDB = await Meetup.findByPk(meetup.id);
     if (meetup.user_id === userId) {
       throw new Error('You cannot subscribe to your own meetup');
     }
 
-    if (isBefore(parseISO(meetup.date), new Date())) {
+    if (isBefore(meetupDB.date, new Date())) {
       throw new Error(
         'You cannot subscribe to meetups that has already happened'
       );
@@ -33,8 +34,8 @@ class SubscriptionService {
           where: {
             date: {
               [Op.between]: [
-                startOfHour(parseISO(meetup.date)),
-                endOfHour(parseISO(meetup.date)),
+                startOfHour(meetupDB.date),
+                endOfHour(meetupDB.date),
               ],
             },
           },

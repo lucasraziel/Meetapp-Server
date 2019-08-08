@@ -14,7 +14,7 @@ factory.define('Meetup-1day', Meetup, {
   description: faker.lorem.sentence(20),
   title: faker.lorem.sentence(6),
   place: faker.address.streetAddress(),
-  date: faker.date.between(addDays(new Date(), 1), addDays(new Date(), 2)),
+  date: addDays(new Date(), 1),
   file_id: 1,
 });
 

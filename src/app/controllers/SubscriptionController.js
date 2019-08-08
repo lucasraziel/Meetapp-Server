@@ -1,6 +1,9 @@
 import { Op } from 'sequelize';
+import SubscriptionMail from '../jobs/SubscriptionMail';
+import Queue from '../../lib/Queue';
 import Meetup from '../models/Meetup';
 import Subscription from '../models/Subscription';
+import User from '../models/User';
 import SubscriptionService from '../services/SubscriptionService';
 
 class SubscriptionController {
@@ -10,6 +13,32 @@ class SubscriptionController {
       date: new Date(),
       user_id: req.userId,
       meetup_id: req.body.id,
+    });
+
+    const newSubscription = await Subscription.findByPk(subscription.id, {
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['name'],
+        },
+        {
+          model: Meetup,
+          as: 'meetup',
+          attributes: ['title', 'date'],
+          include: [
+            {
+              model: User,
+              as: 'user',
+              attributes: ['name', 'email'],
+            },
+          ],
+        },
+      ],
+    });
+
+    await Queue.add(SubscriptionMail.key, {
+      subscription: newSubscription,
     });
 
     return res.status(200).send(subscription);
