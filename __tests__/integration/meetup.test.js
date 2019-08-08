@@ -76,12 +76,11 @@ describe('Meetup', () => {
       .set('Authorization', `bearer ${token}`)
       .send(meetup);
 
-    meetup.id = responseMeetup.body.id;
+    const { id } = responseMeetup.body;
 
     const response = await request(app)
-      .delete('/meetups')
-      .set('Authorization', `bearer ${token}`)
-      .send(meetup);
+      .delete(`/meetups/${id}`)
+      .set('Authorization', `bearer ${token}`);
 
     expect(response.body).toHaveProperty('title');
   });
@@ -104,9 +103,8 @@ describe('Meetup', () => {
       .send(meetup);
 
     const response = await request(app)
-      .delete('/meetups')
-      .set('Authorization', `bearer ${token}`)
-      .send(meetup);
+      .delete('/meetups/a')
+      .set('Authorization', `bearer ${token}`);
 
     expect(response.status).toBe(400);
   });
@@ -219,13 +217,11 @@ describe('Meetup', () => {
 
     const newToken = await startSession('outroEmail@MediaList.com');
 
-    meetup.title = 'New Title';
-    meetup.id = responseMeetup.body.id;
+    const { id } = responseMeetup.body;
 
     const response = await request(app)
-      .delete('/meetups')
-      .set('Authorization', `bearer ${newToken}`)
-      .send(meetup);
+      .delete(`/meetups/${id}`)
+      .set('Authorization', `bearer ${newToken}`);
 
     expect(response.body).toHaveProperty('error');
     expect(response.status).toBe(400);
@@ -289,12 +285,11 @@ describe('Meetup', () => {
 
     await meetupPast.save();
 
-    meetup.id = responseMeetup.body.id;
+    const { id } = meetupPast;
 
     const response = await request(app)
-      .delete('/meetups')
-      .set('Authorization', `bearer ${token}`)
-      .send(meetup);
+      .delete(`/meetups/${id}`)
+      .set('Authorization', `bearer ${token}`);
 
     expect(response.body).toHaveProperty('error');
     expect(response.status).toBe(400);

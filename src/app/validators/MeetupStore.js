@@ -10,6 +10,7 @@ export default async (req, res, next) => {
       date: Yup.date()
         .required()
         .min(addHours(new Date(), 1)),
+      file_id: Yup.number().required(),
     });
 
     await schema.validate(req.body, { abortEarly: false });

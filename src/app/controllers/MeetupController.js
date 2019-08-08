@@ -36,7 +36,7 @@ class MeetupController {
   }
 
   async delete(req, res) {
-    const meetup = await Meetup.findByPk(req.body.id);
+    const meetup = await Meetup.findByPk(req.params.id);
 
     if (isBefore(meetup.date, new Date())) {
       res
