@@ -8,7 +8,9 @@ class Queue {
   constructor() {
     this.queues = {};
 
-    this.init();
+    if (process.env.NODE_ENV !== 'test') {
+      this.init();
+    }
   }
 
   init() {
@@ -23,7 +25,9 @@ class Queue {
   }
 
   add(queue, job) {
-    return this.queues[queue].bee.createJob(job).save();
+    return process.env.NODE_ENV === 'test'
+      ? null
+      : this.queues[queue].bee.createJob(job).save();
   }
 
   processQueue() {
