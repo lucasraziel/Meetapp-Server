@@ -160,4 +160,58 @@ describe('subscription', () => {
 
     expect(response.body.length).toBe(1);
   });
+
+  it('should delete a subscription', async () => {
+    const token = await startSession();
+
+    const meetup = await createMeetup(token);
+
+    const newToken = await startSession('outroEmail@mail.com');
+
+    const response = await request(app)
+      .post('/subscriptions')
+      .set('Authorization', `bearer ${newToken}`)
+      .send(meetup);
+
+    await request(app)
+      .delete(`/subscriptions/${response.body.id}`)
+      .set('Authorization', `bearer ${newToken}`)
+      .expect(200);
+  });
+
+  it('should raise an error when deleting a subscription with invalid id', async () => {
+    const token = await startSession();
+
+    const meetup = await createMeetup(token);
+
+    const newToken = await startSession('outroEmail@mail.com');
+
+    const response = await request(app)
+      .post('/subscriptions')
+      .set('Authorization', `bearer ${newToken}`)
+      .send(meetup);
+
+    await request(app)
+      .delete(`/subscriptions/a`)
+      .set('Authorization', `bearer ${newToken}`)
+      .expect(400);
+  });
+
+  it('should not delete a subscription from another person', async () => {
+    const token = await startSession();
+
+    const meetup = await createMeetup(token);
+
+    const newToken = await startSession('outroEmail@mail.com');
+
+    const response = await request(app)
+      .post('/subscriptions')
+      .set('Authorization', `bearer ${newToken}`)
+      .send(meetup);
+
+    await request(app)
+      .delete(`/subscriptions/${response.body.id}`)
+      .set('Authorization', `bearer ${token}`)
+      .expect(401);
+  });
 });

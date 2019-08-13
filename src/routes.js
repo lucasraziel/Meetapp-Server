@@ -16,6 +16,8 @@ import validateMeetupStore from './app/validators/MeetupStore';
 import validateMeetupUpdate from './app/validators/MeetupUpdate';
 import validateMeetupDelete from './app/validators/MeetupDelete';
 import validateSubscriptionStore from './app/validators/SubscriptionStore';
+import validateUserUpdate from './app/validators/UserUpdate';
+import validadeSubscriptionDelete from './app/validators/SubscriptionDelete';
 
 import authMiddleware from './app/middlewares/auth';
 
@@ -32,9 +34,11 @@ routes.use(authMiddleware);
 
 routes.post('/files', upload.single('file'), FileController.store);
 
+routes.put('/users', validateUserUpdate, UserController.update);
+
 routes.post('/meetups', validateMeetupStore, MeetupController.store);
 
-routes.put('/meetups', validateMeetupUpdate, MeetupController.update);
+routes.put('/meetups/:id', validateMeetupUpdate, MeetupController.update);
 
 routes.get('/meetups', MeetupController.index);
 
@@ -47,5 +51,11 @@ routes.post(
 );
 
 routes.get('/subscriptions', SubscriptionController.index);
+
+routes.delete(
+  '/subscriptions/:id',
+  validadeSubscriptionDelete,
+  SubscriptionController.delete
+);
 
 export default routes;

@@ -1,5 +1,6 @@
 import { isBefore } from 'date-fns';
 import Meetup from '../models/Meetup';
+import File from '../models/File';
 
 class MeetupController {
   async store(req, res) {
@@ -10,7 +11,7 @@ class MeetupController {
   }
 
   async update(req, res) {
-    const meetup = await Meetup.findByPk(req.body.id);
+    const meetup = await Meetup.findByPk(req.params.id);
 
     if (req.userId !== meetup.user_id) {
       res.status(400).send({ error: 'You can only update your meetups' });
@@ -30,7 +31,10 @@ class MeetupController {
   }
 
   async index(req, res) {
-    const meetups = await Meetup.findAll({ where: { user_id: req.userId } });
+    const meetups = await Meetup.findAll({
+      where: { user_id: req.userId },
+      include: [{ model: File, as: 'file', attributes: ['id', 'url', 'path'] }],
+    });
 
     return res.status(200).send(meetups);
   }

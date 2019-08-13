@@ -60,6 +60,20 @@ class SubscriptionController {
 
     return res.status(200).send(subscriptions);
   }
+
+  async delete(req, res) {
+    const subscription = await Subscription.findByPk(req.params.id);
+
+    if (req.userId !== subscription.user_id) {
+      res
+        .status(401)
+        .send({ error: 'You cannot unsubscribe for another user' });
+    }
+
+    await subscription.destroy({ force: true });
+
+    return res.status(200).send(subscription);
+  }
 }
 
 export default new SubscriptionController();

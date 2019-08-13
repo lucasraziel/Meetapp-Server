@@ -4,7 +4,6 @@ import { addHours } from 'date-fns';
 export default async (req, res, next) => {
   try {
     const schema = Yup.object().shape({
-      id: Yup.number().required(),
       place: Yup.string().required(),
       description: Yup.string().required(),
       title: Yup.string().required(),
@@ -12,8 +11,12 @@ export default async (req, res, next) => {
         .required()
         .min(addHours(new Date(), 1)),
     });
+    const schemaParams = Yup.object().shape({
+      id: Yup.number().required(),
+    });
 
     await schema.validate(req.body, { abortEarly: false });
+    await schemaParams.validate(req.params, { abortEarly: false });
 
     return next();
   } catch (err) {
