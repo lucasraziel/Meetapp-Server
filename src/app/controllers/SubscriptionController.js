@@ -4,6 +4,7 @@ import Queue from '../../lib/Queue';
 import Meetup from '../models/Meetup';
 import Subscription from '../models/Subscription';
 import User from '../models/User';
+import File from '../models/File';
 import SubscriptionService from '../services/SubscriptionService';
 
 class SubscriptionController {
@@ -50,9 +51,21 @@ class SubscriptionController {
         {
           model: Meetup,
           as: 'meetup',
-          attributes: ['date'],
+          attributes: ['date', 'id', 'place', 'title', 'description'],
           order: ['date'],
           where: { date: { [Op.gt]: new Date() } },
+          include: [
+            {
+              model: User,
+              as: 'user',
+              attributes: ['id', 'name'],
+            },
+            {
+              model: File,
+              as: 'file',
+              attributes: ['id', 'path', 'url'],
+            },
+          ],
         },
       ],
       where: { user_id: req.userId },
