@@ -130,7 +130,7 @@ describe('Meetup', () => {
     meetup.id = responseMeetup.body.id;
 
     const response = await request(app)
-      .put('/meetups')
+      .put(`/meetups/${meetup.id}`)
       .set('Authorization', `bearer ${token}`)
       .send(meetup);
 
@@ -159,7 +159,7 @@ describe('Meetup', () => {
     meetup.id = responseMeetup.body.id;
 
     const response = await request(app)
-      .put('/meetups')
+      .put(`/meetups/${meetup.id}`)
       .set('Authorization', `bearer ${token}`)
       .send(meetup);
 
@@ -190,7 +190,7 @@ describe('Meetup', () => {
     meetup.id = responseMeetup.body.id;
 
     const response = await request(app)
-      .put('/meetups')
+      .put(`/meetups/${meetup.id}`)
       .set('Authorization', `bearer ${newToken}`)
       .send(meetup);
 
@@ -254,7 +254,7 @@ describe('Meetup', () => {
     meetup.id = responseMeetup.body.id;
 
     const response = await request(app)
-      .put('/meetups')
+      .put(`/meetups/${meetup.id}`)
       .set('Authorization', `bearer ${token}`)
       .send(meetup);
 
