@@ -25,9 +25,9 @@ This software is a demonstration for scheduling public meetups online
 </div>
 It is separated among three projects
 
- - [Backend](https://github.com/lucasraziel/gobarber-server)
- - [Web](https://github.com/lucasraziel/modulo09)
- - [Mobile](https://github.com/lucasraziel/modulo10)
+- [Backend](https://github.com/lucasraziel/Meetapp-Server)
+ - [Web](https://github.com/lucasraziel/Meetapp-Web)
+ - [Mobile](https://github.com/lucasraziel/Meetapp-Mobile)
     <br>
 </p>
 
